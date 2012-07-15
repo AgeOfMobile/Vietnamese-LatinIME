@@ -17,6 +17,7 @@
 package com.android.inputmethod.latin;
 
 import com.android.inputmethod.compat.SuggestionSpanUtils;
+import vietnamese.com.android.inputmethod.latin.R;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;

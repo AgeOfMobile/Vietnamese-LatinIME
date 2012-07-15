@@ -27,6 +27,7 @@ import android.util.Log;
 import com.android.inputmethod.keyboard.Keyboard;
 
 import java.util.Locale;
+import vietnamese.com.android.inputmethod.latin.R;
 
 public class ContactsBinaryDictionary extends ExpandableBinaryDictionary {
 

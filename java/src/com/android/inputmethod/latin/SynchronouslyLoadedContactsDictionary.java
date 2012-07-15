@@ -19,6 +19,7 @@ package com.android.inputmethod.latin;
 import android.content.Context;
 
 import com.android.inputmethod.keyboard.ProximityInfo;
+import vietnamese.com.android.inputmethod.latin.R;
 
 public class SynchronouslyLoadedContactsDictionary extends ContactsDictionary {
     private boolean mClosed;

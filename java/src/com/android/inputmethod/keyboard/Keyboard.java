@@ -33,7 +33,7 @@ import com.android.inputmethod.keyboard.internal.KeyboardIconsSet;
 import com.android.inputmethod.keyboard.internal.KeyboardTextsSet;
 import com.android.inputmethod.latin.LatinImeLogger;
 import com.android.inputmethod.latin.LocaleUtils.RunInLocale;
-import com.android.inputmethod.latin.R;
+import vietnamese.com.android.inputmethod.latin.R;
 import com.android.inputmethod.latin.SubtypeLocale;
 import com.android.inputmethod.latin.Utils;
 import com.android.inputmethod.latin.XmlParseUtils;

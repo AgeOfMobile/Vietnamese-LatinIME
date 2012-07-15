@@ -26,6 +26,7 @@ import android.text.TextUtils;
 import android.view.inputmethod.InputMethodSubtype;
 
 import java.util.ArrayList;
+import vietnamese.com.android.inputmethod.latin.R;
 
 public class AdditionalSubtype {
     private static final InputMethodSubtype[] EMPTY_SUBTYPE_ARRAY = new InputMethodSubtype[0];

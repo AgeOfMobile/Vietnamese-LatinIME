@@ -35,6 +35,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
+import vietnamese.com.android.inputmethod.latin.R;
 
 /**
  * Group class for static methods to help with creation and getting of the binary dictionary

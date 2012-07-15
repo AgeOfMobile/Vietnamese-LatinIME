@@ -22,6 +22,7 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.LinearLayout;
+import vietnamese.com.android.inputmethod.latin.R;
 
 public class InputView extends LinearLayout {
     private View mSuggestionsContainer;

@@ -29,6 +29,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Locale;
 import java.util.concurrent.ConcurrentHashMap;
+import vietnamese.com.android.inputmethod.latin.R;
 
 /**
  * This class loads a dictionary and provides a list of suggestions for a given sequence of
@@ -130,6 +131,7 @@ public class Suggest implements Dictionary.WordCallback {
 
     public void resetMainDict(final Context context, final Locale locale) {
         mHasMainDictionary = false;
+        /*
         new Thread("InitializeBinaryDictionary") {
             @Override
             public void run() {
@@ -140,6 +142,7 @@ public class Suggest implements Dictionary.WordCallback {
                 addOrReplaceDictionary(mBigramDictionaries, DICT_KEY_MAIN, newMainDict);
             }
         }.start();
+        */
     }
 
     // The main dictionary could have been loaded asynchronously.  Don't cache the return value

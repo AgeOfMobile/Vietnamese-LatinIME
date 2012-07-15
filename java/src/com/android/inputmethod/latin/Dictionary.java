@@ -17,6 +17,7 @@
 package com.android.inputmethod.latin;
 
 import com.android.inputmethod.keyboard.ProximityInfo;
+import vietnamese.com.android.inputmethod.latin.R;
 
 /**
  * Abstract base class for a dictionary that can do a fuzzy search for words based on a set of key

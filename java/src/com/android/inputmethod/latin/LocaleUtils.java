@@ -22,6 +22,7 @@ import android.text.TextUtils;
 
 import java.util.HashMap;
 import java.util.Locale;
+import vietnamese.com.android.inputmethod.latin.R;
 
 /**
  * A class to help with handling Locales in string form.

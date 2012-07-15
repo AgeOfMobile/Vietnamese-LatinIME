@@ -30,6 +30,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import vietnamese.com.android.inputmethod.latin.R;
 
 /**
  * When you call the constructor of this class, you may want to change the current system locale by

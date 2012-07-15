@@ -22,6 +22,7 @@ import com.android.inputmethod.keyboard.Keyboard;
 import com.android.inputmethod.keyboard.KeyboardActionListener;
 
 import java.util.Arrays;
+import vietnamese.com.android.inputmethod.latin.R;
 
 /**
  * A place to store the currently composing word with information such as adjacent key codes as well
@@ -347,4 +348,14 @@ public class WordComposer {
         mAutoCorrection = null; // This will be filled by the next call to updateSuggestion.
         mIsResumed = true;
     }
+    
+    public void setCharAt(int pos, char ch) {
+    	char charAt = mTypedWord.charAt(pos);        
+        mTypedWord.setCharAt(pos, ch);
+        if (Character.isUpperCase(charAt) && !Character.isUpperCase(ch)) mCapsCount--;
+    }
+
+	public StringBuilder getComposingWord() {
+		return mTypedWord;		
+	}
 }

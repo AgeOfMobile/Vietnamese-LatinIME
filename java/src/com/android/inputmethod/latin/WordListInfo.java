@@ -16,6 +16,8 @@
 
 package com.android.inputmethod.latin;
 
+import vietnamese.com.android.inputmethod.latin.R;
+
 /**
  * Information container for a word list.
  */

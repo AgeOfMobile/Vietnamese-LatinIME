@@ -23,6 +23,7 @@ import com.android.inputmethod.keyboard.ProximityInfo;
 
 import java.util.Arrays;
 import java.util.Locale;
+import vietnamese.com.android.inputmethod.latin.R;
 
 /**
  * Implements a static, compacted, binary dictionary of standard words.

@@ -17,6 +17,7 @@
 package com.android.inputmethod.latin;
 
 import android.text.TextUtils;
+import vietnamese.com.android.inputmethod.latin.R;
 
 /**
  * This class encapsulates data about a word previously composed, but that has been

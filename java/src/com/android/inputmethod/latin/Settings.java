@@ -40,6 +40,7 @@ import android.widget.TextView;
 
 import com.android.inputmethod.latin.define.ProductionFlag;
 import com.android.inputmethodcommon.InputMethodSettingsFragment;
+import vietnamese.com.android.inputmethod.latin.R;
 
 public class Settings extends InputMethodSettingsFragment
         implements SharedPreferences.OnSharedPreferenceChangeListener {

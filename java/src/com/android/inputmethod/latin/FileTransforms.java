@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.zip.GZIPInputStream;
+import vietnamese.com.android.inputmethod.latin.R;
 
 public class FileTransforms {
     public static OutputStream getCryptedStream(OutputStream out) {

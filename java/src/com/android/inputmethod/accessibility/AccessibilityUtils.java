@@ -30,7 +30,7 @@ import android.view.inputmethod.EditorInfo;
 import com.android.inputmethod.compat.AudioManagerCompatWrapper;
 import com.android.inputmethod.compat.SettingsSecureCompatUtils;
 import com.android.inputmethod.latin.InputTypeUtils;
-import com.android.inputmethod.latin.R;
+import vietnamese.com.android.inputmethod.latin.R;
 
 public class AccessibilityUtils {
     private static final String TAG = AccessibilityUtils.class.getSimpleName();

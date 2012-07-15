@@ -59,3 +59,7 @@
 # platform version.  We know about them, and they are safe.
 -dontwarn android.support.v4.**
 -dontwarn android.support.v13.**
+
+-keep class vietnamese.com.android.inputmethod.latin.BackupAgent {
+  *;
+}

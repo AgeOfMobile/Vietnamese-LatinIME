@@ -21,7 +21,7 @@ import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.util.Log;
 
-import com.android.inputmethod.latin.R;
+import vietnamese.com.android.inputmethod.latin.R;
 
 import java.util.HashMap;
 

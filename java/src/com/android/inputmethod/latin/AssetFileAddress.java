@@ -17,6 +17,7 @@
 package com.android.inputmethod.latin;
 
 import java.io.File;
+import vietnamese.com.android.inputmethod.latin.R;
 
 /**
  * Immutable class to hold the address of an asset.

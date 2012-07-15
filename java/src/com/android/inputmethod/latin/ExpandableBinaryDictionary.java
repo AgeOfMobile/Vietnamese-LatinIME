@@ -31,6 +31,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.concurrent.locks.ReentrantLock;
+import vietnamese.com.android.inputmethod.latin.R;
 
 /**
  * Abstract base class for an expandable dictionary that can be created and updated dynamically

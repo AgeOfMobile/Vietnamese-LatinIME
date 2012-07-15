@@ -25,6 +25,7 @@ import com.android.inputmethod.latin.UserHistoryForgettingCurveUtils.ForgettingC
 
 import java.util.ArrayList;
 import java.util.LinkedList;
+import vietnamese.com.android.inputmethod.latin.R;
 
 /**
  * Base class for an in-memory dictionary that can grow dynamically and can

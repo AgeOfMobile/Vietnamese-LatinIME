@@ -25,6 +25,7 @@ import android.view.inputmethod.InputMethodSubtype;
 
 import java.util.Collections;
 import java.util.List;
+import vietnamese.com.android.inputmethod.latin.R;
 
 /**
  * Utility class for Input Method Framework

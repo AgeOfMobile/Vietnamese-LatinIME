@@ -21,7 +21,7 @@ import android.util.Log;
 import android.view.MotionEvent;
 
 import com.android.inputmethod.latin.LatinImeLogger;
-import com.android.inputmethod.latin.R;
+import vietnamese.com.android.inputmethod.latin.R;
 import com.android.inputmethod.latin.ResearchLogger;
 import com.android.inputmethod.latin.Utils;
 import com.android.inputmethod.latin.define.ProductionFlag;

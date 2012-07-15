@@ -18,6 +18,7 @@ package com.android.inputmethod.latin;
 
 import android.text.format.DateUtils;
 import android.util.Log;
+import vietnamese.com.android.inputmethod.latin.R;
 
 public class UserHistoryForgettingCurveUtils {
     private static final String TAG = UserHistoryForgettingCurveUtils.class.getSimpleName();

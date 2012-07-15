@@ -27,6 +27,7 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.android.inputmethod.keyboard.Keyboard;
+import vietnamese.com.android.inputmethod.latin.R;
 
 // TODO: This class is superseded by {@link ContactsBinaryDictionary}. Should be cleaned up.
 /**

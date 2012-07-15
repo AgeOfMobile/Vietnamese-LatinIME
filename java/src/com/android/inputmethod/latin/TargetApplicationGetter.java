@@ -21,6 +21,7 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import android.util.LruCache;
+import vietnamese.com.android.inputmethod.latin.R;
 
 public class TargetApplicationGetter extends AsyncTask<String, Void, ApplicationInfo> {
 

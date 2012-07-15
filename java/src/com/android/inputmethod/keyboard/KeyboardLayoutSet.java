@@ -38,7 +38,7 @@ import com.android.inputmethod.keyboard.KeyboardLayoutSet.Params.ElementParams;
 import com.android.inputmethod.latin.InputAttributes;
 import com.android.inputmethod.latin.InputTypeUtils;
 import com.android.inputmethod.latin.LatinImeLogger;
-import com.android.inputmethod.latin.R;
+import vietnamese.com.android.inputmethod.latin.R;
 import com.android.inputmethod.latin.SubtypeLocale;
 import com.android.inputmethod.latin.SubtypeSwitcher;
 import com.android.inputmethod.latin.XmlParseUtils;

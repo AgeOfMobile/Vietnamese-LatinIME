@@ -21,6 +21,7 @@ import android.view.inputmethod.ExtractedTextRequest;
 import android.view.inputmethod.InputConnection;
 
 import java.util.regex.Pattern;
+import vietnamese.com.android.inputmethod.latin.R;
 
 /**
  * Utility methods to deal with editing text through an InputConnection.

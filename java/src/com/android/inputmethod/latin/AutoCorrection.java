@@ -23,6 +23,7 @@ import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.concurrent.ConcurrentHashMap;
+import vietnamese.com.android.inputmethod.latin.R;
 
 public class AutoCorrection {
     private static final boolean DBG = LatinImeLogger.sDBG;

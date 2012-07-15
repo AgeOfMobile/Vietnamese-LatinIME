@@ -20,6 +20,7 @@ import android.content.res.TypedArray;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
+import vietnamese.com.android.inputmethod.latin.R;
 
 import java.io.IOException;
 

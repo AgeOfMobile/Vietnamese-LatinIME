@@ -18,6 +18,7 @@ package com.android.inputmethod.latin;
 
 import android.app.backup.BackupAgentHelper;
 import android.app.backup.SharedPreferencesBackupHelper;
+import vietnamese.com.android.inputmethod.latin.R;
 
 /**
  * Backs up the Latin IME shared preferences.

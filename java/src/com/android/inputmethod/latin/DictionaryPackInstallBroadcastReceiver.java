@@ -23,6 +23,7 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ProviderInfo;
 import android.net.Uri;
+import vietnamese.com.android.inputmethod.latin.R;
 
 /**
  * Takes action to reload the necessary data when a dictionary pack was added/removed.

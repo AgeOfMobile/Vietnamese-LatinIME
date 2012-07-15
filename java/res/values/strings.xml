@@ -21,7 +21,7 @@
     <!-- Title for Latin keyboard  -->
     <string name="english_ime_name">Android keyboard</string>
     <!-- Application name for opensource Android keyboard. AOSP(Android Open Source Project) should not be translated. -->
-    <string name="aosp_android_keyboard_ime_name">Android keyboard (AOSP)</string>
+    <string name="aosp_android_keyboard_ime_name">Vietnamese Android keyboard (AOSP)</string>
     <!-- Title for Latin keyboard settings activity / dialog -->
     <string name="english_ime_settings">Android keyboard settings</string>
     <!-- Title for Latin keyboard input options dialog [CHAR LIMIT=25] -->

@@ -25,6 +25,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Locale;
+import vietnamese.com.android.inputmethod.latin.R;
 
 /**
  * Factory for dictionary instances.
@@ -32,7 +33,7 @@ import java.util.Locale;
 public class DictionaryFactory {
     private static final String TAG = DictionaryFactory.class.getSimpleName();
     // This class must be located in the same package as LatinIME.java.
-    private static final String RESOURCE_PACKAGE_NAME =
+    private static final String RESOURCE_PACKAGE_NAME = "vietnamese." +
             DictionaryFactory.class.getPackage().getName();
 
     /**

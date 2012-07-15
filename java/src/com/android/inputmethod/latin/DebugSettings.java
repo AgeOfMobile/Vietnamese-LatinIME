@@ -27,6 +27,7 @@ import android.preference.PreferenceFragment;
 import android.util.Log;
 
 import com.android.inputmethod.keyboard.KeyboardSwitcher;
+import vietnamese.com.android.inputmethod.latin.R;
 
 public class DebugSettings extends PreferenceFragment
         implements SharedPreferences.OnSharedPreferenceChangeListener {

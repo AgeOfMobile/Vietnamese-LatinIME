@@ -21,6 +21,7 @@ import android.content.Context;
 import com.android.inputmethod.keyboard.ProximityInfo;
 
 import java.util.Locale;
+import vietnamese.com.android.inputmethod.latin.R;
 
 public class SynchronouslyLoadedContactsBinaryDictionary extends ContactsBinaryDictionary {
     private boolean mClosed;

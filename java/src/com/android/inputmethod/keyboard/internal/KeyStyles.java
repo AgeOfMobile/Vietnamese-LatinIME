@@ -20,7 +20,7 @@ import android.content.res.TypedArray;
 import android.util.Log;
 
 import com.android.inputmethod.keyboard.Keyboard;
-import com.android.inputmethod.latin.R;
+import vietnamese.com.android.inputmethod.latin.R;
 import com.android.inputmethod.latin.XmlParseUtils;
 
 import org.xmlpull.v1.XmlPullParser;

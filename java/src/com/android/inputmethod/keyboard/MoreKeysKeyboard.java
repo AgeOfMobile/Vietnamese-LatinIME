@@ -22,7 +22,7 @@ import android.view.View;
 
 import com.android.inputmethod.keyboard.internal.KeySpecParser.MoreKeySpec;
 import com.android.inputmethod.keyboard.internal.KeyboardIconsSet;
-import com.android.inputmethod.latin.R;
+import vietnamese.com.android.inputmethod.latin.R;
 import com.android.inputmethod.latin.StringUtils;
 
 public class MoreKeysKeyboard extends Keyboard {

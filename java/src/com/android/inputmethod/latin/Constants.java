@@ -17,6 +17,7 @@
 package com.android.inputmethod.latin;
 
 import android.view.inputmethod.EditorInfo;
+import vietnamese.com.android.inputmethod.latin.R;
 
 public final class Constants {
     public static final class ImeOption {

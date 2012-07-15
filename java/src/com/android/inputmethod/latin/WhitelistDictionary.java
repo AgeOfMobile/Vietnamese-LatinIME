@@ -26,6 +26,7 @@ import com.android.inputmethod.latin.LocaleUtils.RunInLocale;
 
 import java.util.HashMap;
 import java.util.Locale;
+import vietnamese.com.android.inputmethod.latin.R;
 
 public class WhitelistDictionary extends ExpandableDictionary {
 

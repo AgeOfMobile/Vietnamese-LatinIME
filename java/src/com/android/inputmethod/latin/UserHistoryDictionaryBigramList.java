@@ -20,6 +20,7 @@ import android.util.Log;
 
 import java.util.HashMap;
 import java.util.Set;
+import vietnamese.com.android.inputmethod.latin.R;
 
 /**
  * A store of bigrams which will be updated when the user history dictionary is closed

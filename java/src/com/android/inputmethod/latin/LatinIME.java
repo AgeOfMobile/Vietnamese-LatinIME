@@ -20,6 +20,13 @@ import static com.android.inputmethod.latin.Constants.ImeOption.FORCE_ASCII;
 import static com.android.inputmethod.latin.Constants.ImeOption.NO_MICROPHONE;
 import static com.android.inputmethod.latin.Constants.ImeOption.NO_MICROPHONE_COMPAT;
 
+import java.io.FileDescriptor;
+import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.Locale;
+
+import vietnamese.com.android.inputmethod.latin.R;
+import vietnamese.com.android.inputmethod.latin.VietnameseSpellChecker;
 import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -40,6 +47,7 @@ import android.os.Message;
 import android.os.SystemClock;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
+import android.renderscript.Type.CubemapFace;
 import android.text.InputType;
 import android.text.TextUtils;
 import android.util.Log;
@@ -73,11 +81,6 @@ import com.android.inputmethod.keyboard.LatinKeyboardView;
 import com.android.inputmethod.latin.LocaleUtils.RunInLocale;
 import com.android.inputmethod.latin.define.ProductionFlag;
 import com.android.inputmethod.latin.suggestions.SuggestionsView;
-
-import java.io.FileDescriptor;
-import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.Locale;
 
 /**
  * Input method implementation for Qwerty'ish keyboard.
@@ -447,6 +450,8 @@ public class LatinIME extends InputMethodService implements KeyboardActionListen
         newDictFilter.addAction(
                 DictionaryPackInstallBroadcastReceiver.NEW_DICTIONARY_INTENT_ACTION);
         registerReceiver(mDictionaryPackInstallReceiver, newDictFilter);
+        
+        mIsVietnameseSubType = "vi".equals(mSubtypeSwitcher.getCurrentSubtype().getLocale());
     }
 
     // Has to be package-visible for unit tests
@@ -576,6 +581,8 @@ public class LatinIME extends InputMethodService implements KeyboardActionListen
                 mOptionsDialog.dismiss();
         }
         super.onConfigurationChanged(conf);
+        
+        mIsVietnameseSubType = "vi".equals(mSubtypeSwitcher.getCurrentSubtype().getLocale());
     }
 
     @Override
@@ -629,6 +636,7 @@ public class LatinIME extends InputMethodService implements KeyboardActionListen
         // Note that the calling sequence of onCreate() and onCurrentInputMethodSubtypeChanged()
         // is not guaranteed. It may even be called at the same time on a different thread.
         mSubtypeSwitcher.updateSubtype(subtype);
+        mIsVietnameseSubType = "vi".equals(subtype.getLocale());
     }
 
     private void onStartInputInternal(EditorInfo editorInfo, boolean restarting) {
@@ -1205,7 +1213,8 @@ public class LatinIME extends InputMethodService implements KeyboardActionListen
     private void handleLanguageSwitchKey() {
         final boolean includesOtherImes = mSettingsValues.mIncludesOtherImesInLanguageSwitchList;
         final IBinder token = getWindow().getWindow().getAttributes().token;
-        if (mShouldSwitchToLastSubtype) {
+            
+//        if (mShouldSwitchToLastSubtype) {
             final InputMethodSubtype lastSubtype = mImm.getLastInputMethodSubtype();
             final boolean lastSubtypeBelongsToThisIme =
                     ImfUtils.checkIfSubtypeBelongsToThisImeAndEnabled(this, lastSubtype);
@@ -1216,9 +1225,9 @@ public class LatinIME extends InputMethodService implements KeyboardActionListen
                 mImm.switchToNextInputMethod(token, !includesOtherImes);
                 mShouldSwitchToLastSubtype = true;
             }
-        } else {
-            mImm.switchToNextInputMethod(token, !includesOtherImes);
-        }
+//        } else {
+//            mImm.switchToNextInputMethod(token, !includesOtherImes);
+//        }
     }
 
     static private void sendUpDownEnterOrBackspace(final int code, final InputConnection ic) {
@@ -1405,6 +1414,8 @@ public class LatinIME extends InputMethodService implements KeyboardActionListen
         ic.beginBatchEdit();
         handleBackspaceWhileInBatchEdit(spaceState, ic);
         ic.endBatchEdit();
+        
+        if (mIsVietnameseSubType) adjustAccent(true);
     }
 
     // "ic" may not be null.
@@ -1421,7 +1432,7 @@ public class LatinIME extends InputMethodService implements KeyboardActionListen
             if (ProductionFlag.IS_EXPERIMENTAL) {
                 ResearchLogger.latinIME_deleteSurroundingText(length);
             }
-            // If we have mEnteredText, then we know that mHasUncommittedTypedChars == false.
+            // If we have mEnteredText, then we know that isComposiingWord == false.
             // In addition we know that spaceState is false, and that we should not be
             // reverting any autocorrect at this point. So we can safely return.
             return;
@@ -1534,16 +1545,23 @@ public class LatinIME extends InputMethodService implements KeyboardActionListen
 
     private void handleCharacter(final int primaryCode, final int x,
             final int y, final int spaceState) {
+    	if (handleVietnameseCharacter(primaryCode, x, y, spaceState)) {
+    		adjustAccent(false);
+        	return;
+        }
+    	
         final InputConnection ic = getCurrentInputConnection();
         if (null != ic) ic.beginBatchEdit();
-        // TODO: if ic is null, does it make any sense to call this?
+        // TODO: if ic is null, does it make any sense to call this?                
         handleCharacterWhileInBatchEdit(primaryCode, x, y, spaceState, ic);
         if (null != ic) ic.endBatchEdit();
+        
+        if (mIsVietnameseSubType) adjustAccent(false);
     }
 
     // "ic" may be null without this crashing, but the behavior will be really strange
     private void handleCharacterWhileInBatchEdit(final int primaryCode,
-            final int x, final int y, final int spaceState, final InputConnection ic) {
+            final int x, final int y, final int spaceState, final InputConnection ic) {    	
         boolean isComposingWord = mWordComposer.isComposingWord();
 
         if (SPACE_STATE_PHANTOM == spaceState &&
@@ -1611,6 +1629,8 @@ public class LatinIME extends InputMethodService implements KeyboardActionListen
     // Returns true if we did an autocorrection, false otherwise.
     private boolean handleSeparator(final int primaryCode, final int x, final int y,
             final int spaceState) {
+    	if (mIsVietnameseSubType) adjustAccent(true);
+    	
         // Should dismiss the "Touch again to save" message when handling separator
         if (mSuggestionsView != null && mSuggestionsView.dismissAddToDictionaryHint()) {
             mHandler.cancelUpdateBigramPredictions();
@@ -1684,7 +1704,8 @@ public class LatinIME extends InputMethodService implements KeyboardActionListen
 
         if (ic != null) {
             ic.endBatchEdit();
-        }
+        }                
+        
         return didAutoCorrect;
     }
 
@@ -2479,4 +2500,389 @@ public class LatinIME extends InputMethodService implements KeyboardActionListen
         p.println("  mKeyPreviewPopupOn=" + mSettingsValues.mKeyPreviewPopupOn);
         p.println("  mInputAttributes=" + mInputAttributes.toString());
     }
+    
+    private boolean handleVietnameseCharacter(int originalTypedChar, int x, int y, int spaceState) {
+    	final int typedChar = Character.toLowerCase(originalTypedChar);
+    	if (!shouldHandleVietnameseCharacter(typedChar)) {
+    		return false;		
+    	}
+    	final boolean isComposingWord = mWordComposer.isComposingWord();
+    	
+    	final InputConnection ic = getCurrentInputConnection();
+        if (ic == null) return false;
+                    	        
+        mTempCurrentWord.setLength(0);
+        StringBuilder currentWord = mTempCurrentWord;        
+    	if (!isComposingWord) {
+    		currentWord.append(ic.getTextBeforeCursor(10, 0));
+    		if (currentWord != null) {
+    			for (int i = currentWord.length() - 1; i >= 0; i--) {
+    				if (mSettingsValues.isWordSeparator(currentWord.charAt(i))) {
+    					currentWord.delete(0, i + 1);
+    					break;
+    				}
+    			}
+    		}
+    	} else {
+    		currentWord.append(mWordComposer.getTypedWord());
+    	}
+    	
+    	if (currentWord == null || currentWord.length() == 0) {
+    		if (typedChar == 'w') {
+    			mLastWConverted = originalTypedChar;
+    			handleCharacterWhileInBatchEdit(originalTypedChar == 'w' ? 'ư' : 'Ư', x, y, spaceState, ic);
+    			return true;
+        	}
+    		return false;
+    	}
+    	
+    	if (!VietnameseSpellChecker.isVietnameseWord(currentWord)) {
+    		return false;
+    	}    	
+
+    	int replacedCharIndex = -1;
+    	int replacedChar = 0;
+    	int typedCharPos = -1;
+    	boolean shouldKeepCurrentChar = false;
+    	
+    	for (int i = 0; i < VN_DOUBLE_CHARS.length; i++) {
+    		if (typedChar == VN_DOUBLE_CHARS[i]) {
+    			typedCharPos = i;
+    			break;
+    		}
+    	}
+    	if (typedCharPos != -1) {
+    		// process a e o d w
+			if (ONLY_PROCESS_CONTINUOUS_DOUBLES) {
+				if (currentWord.length() > 0) {
+					int charAt = currentWord.charAt(currentWord.length() - 1);
+					for (int j = 0; j < VN_CHARS_TO_FIND[typedCharPos].length; j++) {
+						if (charAt == VN_CHARS_TO_FIND[typedCharPos][j]) {
+							replacedCharIndex = currentWord.length() - 1;
+							replacedChar = VN_CHARS_TO_REPLACE[typedCharPos][j];    					
+			    			if (j >= VN_FALLBACKS[typedCharPos]) {
+			    				shouldKeepCurrentChar = true;
+			    			}
+							break;
+						}
+					}
+				}
+			} else {
+				// process a e o d w
+				for (int i = currentWord.length() - 1; i >= 0; i--) {
+					int charAt = currentWord.charAt(i);
+					final int[] charsToFind = VN_CHARS_TO_FIND[typedCharPos]; 
+					for (int j = 0; j < charsToFind.length; j++) {
+						if (charAt == charsToFind[j]) {
+							replacedCharIndex = i;
+							replacedChar = VN_CHARS_TO_REPLACE[typedCharPos][j];
+							if (typedChar == 'w') {
+								if (mLastWConverted != 0) {				    				
+				    				shouldKeepCurrentChar = false;
+				    				replacedChar = mLastWConverted;
+				    				mLastWConverted = 0;
+				    				break;
+								}
+							}
+							
+							if (j >= VN_FALLBACKS[typedCharPos]) {
+			    				shouldKeepCurrentChar = true;			    			
+			    			}
+							break;
+						}
+					}
+					if (replacedCharIndex != -1) break; // found, stop now				
+				}
+			}			
+    	} else {
+    		// process markers: s f r x j
+    		for (int i = 0; i < VN_TONE_MARKERS.length; i++) {
+        		if (typedChar == VN_TONE_MARKERS[i]) {
+        			typedCharPos = i;
+        			break;
+        		}
+        	}
+    		
+    		if (typedCharPos != -1) {
+    			int sequenceLength = 0;
+    			int lastVowelIndex = -1;
+    			// finding vowels sequence
+    			int lastCharIndex = currentWord.length() - 1;
+        		for (int i = lastCharIndex; i >= 0; i--) {
+        			int currentChar = currentWord.charAt(i);
+        			int vowelIndex = -1;
+        			for (int j = 0; j < VN_VOWELS.length; j++) {
+        				if (currentChar == VN_VOWELS[j]) {        					
+        					vowelIndex = j;
+        					vowelIndexes[sequenceLength] = j;
+        					sequenceLength += 1;
+        					if (lastVowelIndex == -1) lastVowelIndex = i;
+        					break;
+        				}
+        			}
+        			
+        			if (vowelIndex != -1 && 
+        				!(('a' <= currentChar && currentChar <= 'z') || 
+        					('A' <= currentChar && currentChar <= 'Z'))) {
+        				break;        				
+        			}
+        			if ((vowelIndex == -1 && lastVowelIndex != -1) || sequenceLength >= MAX_VOWELS_SEQUENCE) break;
+        		}
+        		
+        		if (lastVowelIndex != -1) {
+	        		if (sequenceLength == 3) {
+	        			int middleVowel = currentWord.charAt(lastVowelIndex - 1);
+	        			middleVowel = VN_VOWELS[(vowelIndexes[1] / 6) * 6];
+	        			if (middleVowel != 'y' && middleVowel != 'Y') {
+	        				replacedCharIndex = lastVowelIndex - 1;
+	        			} else {
+	        				replacedCharIndex = lastVowelIndex;
+	        			}
+	        		} else if (sequenceLength == 2) {
+	        			replacedCharIndex = lastVowelIndex - 1; // first vowel by default
+	        			
+	        			if (lastVowelIndex - sequenceLength >= 0) {
+	        				int consonant = currentWord.charAt(lastVowelIndex - sequenceLength);
+	        				int firstVowel = currentWord.charAt(lastVowelIndex - sequenceLength + 1);
+	        				firstVowel = VN_VOWELS[(vowelIndexes[0] / 6) * 6];
+	        				
+	        				if ((consonant == 'Q' || consonant == 'q') ||
+	        					((consonant == 'G' || consonant == 'g') && (firstVowel == 'i' || firstVowel == 'I'))) {
+	        					replacedCharIndex += 1;
+	        				} else if (lastVowelIndex < lastCharIndex) { // co phu am phia sau
+		        				replacedCharIndex += 1;
+	        				}
+	        			} else if (lastVowelIndex < lastCharIndex) { // co phu am phia sau
+	        				replacedCharIndex += 1;
+	        			}
+	        		} else {
+	        			replacedCharIndex = lastVowelIndex;
+	        		}
+        		
+	        		int row = vowelIndexes[lastVowelIndex - replacedCharIndex] / 6;
+	        		replacedChar = VN_VOWELS[row * 6 + typedCharPos];
+	        		if (replacedChar == currentWord.charAt(replacedCharIndex)) {
+	        			replacedChar = VN_VOWELS[row * 6];
+	        			shouldKeepCurrentChar = true;
+	        		}
+        		}
+        	}
+    	}
+    	    	
+    	if (replacedCharIndex != -1) {
+            ic.beginBatchEdit();            
+            
+            if (isComposingWord) {
+            	mWordComposer.setCharAt(replacedCharIndex, (char)replacedChar);
+            	ic.setComposingText(getTextWithUnderline(mWordComposer.getTypedWord()), 1);            	
+            	mHandler.postUpdateSuggestions();
+            } else {
+            	currentWord.setCharAt(replacedCharIndex, (char)replacedChar);
+            	ic.deleteSurroundingText(currentWord.length(), 0);            	
+            	ic.commitText(currentWord, 1);
+            }
+            ic.endBatchEdit();
+            
+            return shouldKeepCurrentChar ? false : true; // return false to call the original handleCharacter
+            
+    	} else if (typedChar == 'w') {
+    		mLastWConverted = originalTypedChar;
+    		handleCharacterWhileInBatchEdit(originalTypedChar == 'w' ? 'ư' : 'Ư', x, y, spaceState, ic);
+			return true;
+    	}
+    	
+    	return false;
+    }
+    
+    private void adjustAccent(boolean fixUWOW) {
+    	final boolean isComposingWord = mWordComposer.isComposingWord(); 
+    	final InputConnection ic = getCurrentInputConnection();
+        if (ic == null) return;
+                    	
+        mTempCurrentWord.setLength(0);
+    	StringBuilder currentWord = mTempCurrentWord;
+    	int beforeLength = -1, afterLength = -1;
+    	if (!isComposingWord) {    		
+    		CharSequence beforeText = ic.getTextBeforeCursor(10, 0);
+    		CharSequence afterText = ic.getTextAfterCursor(10, 0);    		
+    		if (beforeText != null) {
+    			for (int i = beforeText.length() - 1; i >= 0; i--) {
+    				if (mSettingsValues.isWordSeparator(beforeText.charAt(i))) {
+    					beforeLength = beforeText.length() - i - 1;
+    					currentWord.append(beforeText.subSequence(i + 1, beforeText.length()));
+    					break;
+    				}
+    			}
+    			if (beforeLength == -1) {
+    				beforeLength = beforeText.length();
+    				currentWord.append(beforeText);    				
+    			}
+    		}
+    		
+    		if (afterText != null) {
+    			for (int i = 0; i < afterText.length(); i++) {
+    				if (mSettingsValues.isWordSeparator(afterText.charAt(i))) {
+    					afterLength = i;
+    					currentWord.append(afterText.subSequence(0, i));
+    					break;
+    				}
+    			}    			
+    			if (afterLength == -1) {
+    				afterLength = afterText.length();
+    				currentWord.append(afterText);    				
+    			}
+    		}
+    	} else {
+    		currentWord.append(mWordComposer.getTypedWord());
+    	}
+    	
+    	//Log.d("DEBUG", "Current word: " + currentWord);
+    	
+    	if (currentWord.length() > 0 && 
+    			!VietnameseSpellChecker.adjustAccent(currentWord,
+    					VietnameseSpellChecker.ACCENT_AUTO, fixUWOW)) {
+    		//Log.d("DEBUG", "No need to fix!");
+    		return;
+    	}
+    	
+    	if (isComposingWord) {
+    		ic.beginBatchEdit();
+    		mWordComposer.setComposingWord(currentWord, mKeyboardSwitcher.getKeyboard());
+        	ic.setComposingText(getTextWithUnderline(mWordComposer.getTypedWord()), 1);
+        	mHandler.postUpdateSuggestions();
+            ic.endBatchEdit();
+    	} else {
+    		ic.deleteSurroundingText(beforeLength, afterLength);
+    		ic.commitText(currentWord, 1);
+    	}
+    }
+    
+    private boolean shouldHandleVietnameseCharacter(int primaryCode) {
+    	return mIsVietnameseSubType && isVietnameseToneMarker(primaryCode);
+    }
+    
+    private boolean isVietnameseToneMarker(int typedChar) {
+    	return 
+    		typedChar == 'a' || // aa -> â 
+    		typedChar == 'e' || // ee -> ê 
+    		typedChar == 'o' || // oo -> ô
+    		typedChar == 'w' || // uw -> ư, ow -> ơ, aw -> ă
+    		typedChar == 'd' || // dd -> đ;
+    		typedChar == 'z' || // á -> a
+    		typedChar == 's' || // as -> á
+    		typedChar == 'f' || // af -> à    
+    		typedChar == 'r' || // ar -> ả
+    		typedChar == 'x' || // ax -> ã
+    		typedChar == 'j';   // aj -> ạ    		
+    }
+
+	private static final boolean ONLY_PROCESS_CONTINUOUS_DOUBLES = false;
+
+	private static final StringBuilder mTempCurrentWord = new StringBuilder(20);
+    private boolean mIsVietnameseSubType = false;
+    private int mLastWConverted = 0;
+
+    private int[] vowelIndexes = new int[MAX_VOWELS_SEQUENCE];        
+    
+    private final static int[] VN_DOUBLE_CHARS = { 'd', 'a', 'e', 'o', 'w' };
+    
+    private static final int[][] VN_CHARS_TO_FIND = {
+    	{ 'd', 'D',
+    	  'đ', 'Đ' }, 						/* d */
+    	  
+    	{ 'a', 'á', 'à', 'ả', 'ã', 'ạ',		/* a */
+    	  'A', 'Á', 'À', 'Ả', 'Ã', 'Ạ',
+    	  'ă', 'ắ', 'ằ', 'ẳ', 'ẵ', 'ặ',
+    	  'Ă', 'Ắ', 'Ằ', 'Ẳ', 'Ẵ', 'Ặ',
+    	  'â', 'ấ', 'ầ', 'ẩ', 'ẫ', 'ậ', 
+    	  'Â', 'Ấ', 'Ầ', 'Ẩ', 'Ẫ', 'Ậ'},
+    	  
+    	{ 'e', 'é', 'è', 'ẻ', 'ẽ', 'ẹ',		/* e */
+    	  'E', 'É', 'È', 'Ẻ', 'Ẽ', 'Ẹ',
+    	  'ê', 'ế', 'ề', 'ể', 'ễ', 'ệ', 
+    	  'Ê', 'Ế', 'Ề', 'Ể', 'Ễ', 'Ệ' },
+
+    	{ 'o', 'ó', 'ò', 'ỏ', 'õ', 'ọ',		/* o */
+    	  'O', 'Ó', 'Ò', 'Ỏ', 'Õ', 'Ọ',
+    	  'ơ', 'ớ', 'ờ', 'ở', 'ỡ', 'ợ', 
+    	  'Ơ', 'Ớ', 'Ờ', 'Ở', 'Ỡ', 'Ợ',
+    	  'ô', 'ố', 'ồ', 'ổ', 'ỗ', 'ộ', 
+    	  'Ô', 'Ố', 'Ồ', 'Ổ', 'Ỗ', 'Ộ' },
+    	  
+    	{ 'a', 'á', 'à', 'ả', 'ã', 'ạ',		/* w */
+    	  'A', 'Á', 'À', 'Ả', 'Ã', 'Ạ',
+    	  'â', 'ấ', 'ầ', 'ẩ', 'ẫ', 'ậ',
+    	  'Â', 'Ấ', 'Ầ', 'Ẩ', 'Ẫ', 'Ậ',
+    	  'o', 'ó', 'ò', 'ỏ', 'õ', 'ọ', 
+    	  'O', 'Ó', 'Ò', 'Ỏ', 'Õ', 'Ọ',
+    	  'ô', 'ố', 'ồ', 'ổ', 'ỗ', 'ộ', 
+    	  'Ô', 'Ố', 'Ồ', 'Ổ', 'Ỗ', 'Ộ',
+    	  'u', 'ú', 'ù', 'ủ', 'ũ', 'ụ', 
+    	  'U', 'Ú', 'Ù', 'Ủ', 'Ũ', 'Ụ',
+    	  'ư', 'Ư',
+    	  
+    	  'ă', 'ắ', 'ằ', 'ẳ', 'ẵ', 'ặ', 
+    	  'Ă', 'Ắ', 'Ằ', 'Ẳ', 'Ẵ', 'Ặ',
+    	  'ơ', 'ớ', 'ờ', 'ở', 'ỡ', 'ợ', 
+    	  'Ơ', 'Ớ', 'Ờ', 'Ở', 'Ỡ', 'Ợ',
+    	  'ứ', 'ừ', 'ử', 'ữ', 'ự',
+    	  'Ứ', 'Ừ', 'Ử', 'Ữ', 'Ự' }
+    };            
+    
+    private static final int[][] VN_CHARS_TO_REPLACE = {
+    	{ 'đ', 'Đ',
+    	  'd', 'D' }, 
+    	  
+    	{ 'â', 'ấ', 'ầ', 'ẩ', 'ẫ', 'ậ', 
+    	  'Â', 'Ấ', 'Ầ', 'Ẩ', 'Ẫ', 'Ậ',
+    	  'â', 'ấ', 'ầ', 'ẩ', 'ẫ', 'ậ',
+    	  'Â', 'Ấ', 'Ầ', 'Ẩ', 'Ẫ', 'Ậ',
+    	  'a', 'á', 'à', 'ả', 'ã', 'ạ',
+    	  'A', 'Á', 'À', 'Ả', 'Ã', 'Ạ' },
+    	  
+    	{ 'ê', 'ế', 'ề', 'ể', 'ễ', 'ệ', 
+    	  'Ê', 'Ế', 'Ề', 'Ể', 'Ễ', 'Ệ',
+    	  'e', 'é', 'è', 'ẻ', 'ẽ', 'ẹ',
+    	  'E', 'É', 'È', 'Ẻ', 'Ẽ', 'Ẹ' },
+    	  
+    	{ 'ô', 'ố', 'ồ', 'ổ', 'ỗ', 'ộ', 
+    	  'Ô', 'Ố', 'Ồ', 'Ổ', 'Ỗ', 'Ộ',
+    	  'ô', 'ố', 'ồ', 'ổ', 'ỗ', 'ộ', 
+    	  'Ô', 'Ố', 'Ồ', 'Ổ', 'Ỗ', 'Ộ',
+    	  'o', 'ó', 'ò', 'ỏ', 'õ', 'ọ',
+    	  'O', 'Ó', 'Ò', 'Ỏ', 'Õ', 'Ọ' },
+    	  
+    	{ 'ă', 'ắ', 'ằ', 'ẳ', 'ẵ', 'ặ',
+    	  'Ă', 'Ắ', 'Ằ', 'Ẳ', 'Ẵ', 'Ặ',
+    	  'ă', 'ắ', 'ằ', 'ẳ', 'ẵ', 'ặ', 
+    	  'Ă', 'Ắ', 'Ằ', 'Ẳ', 'Ẵ', 'Ặ',
+    	  'ơ', 'ớ', 'ờ', 'ở', 'ỡ', 'ợ', 
+    	  'Ơ', 'Ớ', 'Ờ', 'Ở', 'Ỡ', 'Ợ',
+    	  'ơ', 'ớ', 'ờ', 'ở', 'ỡ', 'ợ', 
+    	  'Ơ', 'Ớ', 'Ờ', 'Ở', 'Ỡ', 'Ợ',
+    	  'ư', 'ứ', 'ừ', 'ử', 'ữ', 'ự', 
+    	  'Ư', 'Ứ', 'Ừ', 'Ử', 'Ữ', 'Ự',
+    	  'u', 'U',
+    	  
+    	  'a', 'á', 'à', 'ả', 'ã', 'ạ',
+    	  'A', 'Á', 'À', 'Ả', 'Ã', 'Ạ',
+    	  'o', 'ó', 'ò', 'ỏ', 'õ', 'ọ', 
+    	  'O', 'Ó', 'Ò', 'Ỏ', 'Õ', 'Ọ',
+    	  'ú', 'ù', 'ủ', 'ũ', 'ụ', 
+    	  'Ú', 'Ù', 'Ủ', 'Ũ', 'Ụ' }
+    };    
+    
+    private static final int[] VN_FALLBACKS = {
+    	2,
+    	24,
+    	12,
+    	24,
+    	60
+    };    
+    
+    private static final int[] VN_TONE_MARKERS = { 'z', 's', 'f', 'r', 'x', 'j' };
+    
+    private static final int[] VN_VOWELS = VietnameseSpellChecker.VN_VOWELS;        
+
+    private static final int MAX_VOWELS_SEQUENCE = 3;
 }

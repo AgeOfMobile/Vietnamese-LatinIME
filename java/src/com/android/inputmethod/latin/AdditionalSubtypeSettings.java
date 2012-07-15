@@ -48,6 +48,7 @@ import com.android.inputmethod.compat.CompatUtils;
 
 import java.util.ArrayList;
 import java.util.TreeSet;
+import vietnamese.com.android.inputmethod.latin.R;
 
 public class AdditionalSubtypeSettings extends PreferenceFragment {
     private SharedPreferences mPrefs;

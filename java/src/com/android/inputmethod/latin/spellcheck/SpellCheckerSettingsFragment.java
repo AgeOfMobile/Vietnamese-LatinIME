@@ -19,7 +19,7 @@ package com.android.inputmethod.latin.spellcheck;
 import android.os.Bundle;
 import android.preference.PreferenceFragment;
 
-import com.android.inputmethod.latin.R;
+import vietnamese.com.android.inputmethod.latin.R;
 
 /**
  * Preference screen.

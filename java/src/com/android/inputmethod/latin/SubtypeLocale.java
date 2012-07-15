@@ -29,11 +29,12 @@ import com.android.inputmethod.latin.LocaleUtils.RunInLocale;
 
 import java.util.HashMap;
 import java.util.Locale;
+import vietnamese.com.android.inputmethod.latin.R;
 
 public class SubtypeLocale {
     static final String TAG = SubtypeLocale.class.getSimpleName();
     // This class must be located in the same package as LatinIME.java.
-    private static final String RESOURCE_PACKAGE_NAME =
+    private static final String RESOURCE_PACKAGE_NAME = "vietnamese." +
             DictionaryFactory.class.getPackage().getName();
 
     // Special language code to represent "no language".

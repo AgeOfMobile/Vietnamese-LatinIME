@@ -47,6 +47,7 @@ import java.nio.CharBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.charset.Charset;
 import java.util.Map;
+import vietnamese.com.android.inputmethod.latin.R;
 
 /**
  * Logs the use of the LatinIME keyboard.

@@ -22,6 +22,7 @@ import android.view.inputmethod.CompletionInfo;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
+import vietnamese.com.android.inputmethod.latin.R;
 
 public class SuggestedWords {
     public static final SuggestedWords EMPTY = new SuggestedWords(

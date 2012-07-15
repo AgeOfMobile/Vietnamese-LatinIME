@@ -23,6 +23,7 @@ import android.view.View;
 
 import com.android.inputmethod.keyboard.Keyboard;
 import com.android.inputmethod.latin.VibratorUtils;
+import vietnamese.com.android.inputmethod.latin.R;
 
 /**
  * This class gathers audio feedback and haptic feedback functions.

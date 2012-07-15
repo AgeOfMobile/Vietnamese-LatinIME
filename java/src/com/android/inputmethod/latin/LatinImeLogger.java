@@ -20,6 +20,7 @@ import android.content.SharedPreferences;
 import android.view.inputmethod.EditorInfo;
 
 import com.android.inputmethod.keyboard.Keyboard;
+import vietnamese.com.android.inputmethod.latin.R;
 
 public class LatinImeLogger implements SharedPreferences.OnSharedPreferenceChangeListener {
 

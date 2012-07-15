@@ -19,6 +19,7 @@ package com.android.inputmethod.latin;
 import android.text.InputType;
 import android.util.Log;
 import android.view.inputmethod.EditorInfo;
+import vietnamese.com.android.inputmethod.latin.R;
 
 /**
  * Class to hold attributes of the input field.

@@ -20,6 +20,7 @@ import android.os.Handler;
 import android.os.Looper;
 
 import java.lang.ref.WeakReference;
+import vietnamese.com.android.inputmethod.latin.R;
 
 public class StaticInnerHandlerWrapper<T> extends Handler {
     final private WeakReference<T> mOuterInstanceRef;

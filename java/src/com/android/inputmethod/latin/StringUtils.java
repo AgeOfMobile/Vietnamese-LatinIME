@@ -20,6 +20,7 @@ import android.text.TextUtils;
 
 import java.util.ArrayList;
 import java.util.Locale;
+import vietnamese.com.android.inputmethod.latin.R;
 
 public class StringUtils {
     private StringUtils() {

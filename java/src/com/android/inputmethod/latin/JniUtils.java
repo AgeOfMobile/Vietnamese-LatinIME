@@ -19,6 +19,7 @@ package com.android.inputmethod.latin;
 import android.util.Log;
 
 import com.android.inputmethod.latin.define.JniLibName;
+import vietnamese.com.android.inputmethod.latin.R;
 
 public class JniUtils {
     private static final String TAG = JniUtils.class.getSimpleName();
@@ -31,6 +32,7 @@ public class JniUtils {
         try {
             System.loadLibrary(JniLibName.JNI_LIB_NAME);
         } catch (UnsatisfiedLinkError ule) {
+        	ule.printStackTrace();
             Log.e(TAG, "Could not load native library " + JniLibName.JNI_LIB_NAME);
             if (LatinImeLogger.sDBG) {
                 throw new RuntimeException(

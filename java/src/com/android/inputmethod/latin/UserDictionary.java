@@ -28,6 +28,7 @@ import android.text.TextUtils;
 import com.android.inputmethod.keyboard.ProximityInfo;
 
 import java.util.Arrays;
+import vietnamese.com.android.inputmethod.latin.R;
 
 // TODO: This class is superseded by {@link UserBinaryDictionary}. Should be cleaned up.
 /**

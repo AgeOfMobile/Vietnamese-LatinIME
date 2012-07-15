@@ -26,6 +26,7 @@ import android.provider.UserDictionary.Words;
 import android.text.TextUtils;
 
 import java.util.Arrays;
+import vietnamese.com.android.inputmethod.latin.R;
 
 /**
  * An expandable dictionary that stores the words in the user unigram dictionary.
@@ -135,12 +136,16 @@ public class UserBinaryDictionary extends ExpandableBinaryDictionary {
         } else {
             requestArguments = localeElements;
         }
-        final Cursor cursor = mContext.getContentResolver().query(
-            Words.CONTENT_URI, PROJECTION_QUERY, request.toString(), requestArguments, null);
         try {
-            addWords(cursor);
-        } finally {
-            if (null != cursor) cursor.close();
+	        final Cursor cursor = mContext.getContentResolver().query(
+	            Words.CONTENT_URI, PROJECTION_QUERY, request.toString(), requestArguments, null);
+	        try {
+	            addWords(cursor);
+	        } catch (Throwable t) {
+	        } finally {
+	            if (null != cursor) cursor.close();
+	        }
+        } catch (Throwable t) {        	
         }
     }
 

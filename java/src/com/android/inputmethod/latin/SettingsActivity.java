@@ -18,6 +18,7 @@ package com.android.inputmethod.latin;
 
 import android.content.Intent;
 import android.preference.PreferenceActivity;
+import vietnamese.com.android.inputmethod.latin.R;
 
 public class SettingsActivity extends PreferenceActivity {
     private static final String DEFAULT_FRAGMENT = Settings.class.getName();

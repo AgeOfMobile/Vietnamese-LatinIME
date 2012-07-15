@@ -36,6 +36,7 @@ import com.android.inputmethod.keyboard.KeyboardSwitcher;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import vietnamese.com.android.inputmethod.latin.R;
 
 public class SubtypeSwitcher {
     private static boolean DBG = LatinImeLogger.sDBG;

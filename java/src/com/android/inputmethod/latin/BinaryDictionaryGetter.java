@@ -26,6 +26,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Locale;
+import vietnamese.com.android.inputmethod.latin.R;
 
 /**
  * Helper class to get the address of a mmap'able dictionary file.

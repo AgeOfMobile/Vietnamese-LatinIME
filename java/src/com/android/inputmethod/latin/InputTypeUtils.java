@@ -17,6 +17,7 @@
 package com.android.inputmethod.latin;
 
 import android.text.InputType;
+import vietnamese.com.android.inputmethod.latin.R;
 
 public class InputTypeUtils implements InputType {
     private static final int WEB_TEXT_PASSWORD_INPUT_TYPE =

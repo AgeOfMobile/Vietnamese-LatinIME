@@ -33,6 +33,7 @@ import java.lang.ref.SoftReference;
 import java.util.HashMap;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.locks.ReentrantLock;
+import vietnamese.com.android.inputmethod.latin.R;
 
 /**
  * Locally gathers stats about the words user types and various other signals like auto-correction

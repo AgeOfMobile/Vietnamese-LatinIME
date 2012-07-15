@@ -23,6 +23,7 @@ import android.util.Log;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.concurrent.CopyOnWriteArrayList;
+import vietnamese.com.android.inputmethod.latin.R;
 
 /**
  * Class for a collection of dictionaries that behave like one dictionary.
