@@ -65,25 +65,25 @@ public class VietnameseSpellChecker {
 		}
 		needToFix = numberOfAccents > 1;
 				
-//		System.out.println("firstVowelPositionInWord = " + firstVowelPositionInWord);
-//		System.out.println("Sequence length = " + vowelSequenceLength);
-//		System.out.println("Accent = " + accent);
-				
-		// fix ươ case		
+		// fix ươ, oă cases		
 		if (vowelSequenceLength >= 2) {
 			int firstVowel = word.charAt(firstVowelIndex);
 			firstVowel = VN_VOWELS[(vowelIndexes[0] / 6) * 6];
 			int secondVowel = word.charAt(firstVowelIndex + 1);
 			secondVowel = VN_VOWELS[(vowelIndexes[1] / 6) * 6];
+			int consonant = 0;
+			if (firstVowelIndex > 0) consonant = word.charAt(firstVowelIndex - 1);
 			boolean endWithConsonant = (firstVowelIndex + 2 < wordLength);
 			
 			if (firstVowel == 'u' || firstVowel == 'U') {
-				if ((secondVowel == 'ơ' || secondVowel == 'Ơ') && endWithConsonant) {
-					// uơ[...] -> ươ[...]
+				if ((secondVowel == 'ơ' || secondVowel == 'Ơ') && endWithConsonant
+					&& (consonant != 'q' && consonant != 'Q')) {
+					// uơ[...] -> ươ[...], but not quơ[...]
 					vowelIndexes[0] = UW_INDEX + (firstVowel == 'u' ? 0 : 6);
 					needToFix = true;
-				} else if (secondVowel == 'ă' || secondVowel == 'Ă') {
-					// uă -> ưa
+				} else if ((secondVowel == 'ă' || secondVowel == 'Ă') && 
+						(consonant != 'q' && consonant != 'Q')) {
+					// uă -> ưa, but not quă[...]
 					vowelIndexes[0] = UW_INDEX + (firstVowel == 'u' ? 0 : 6);
 					vowelIndexes[1] = A_INDEX + (secondVowel == 'ă' ? 0 : 6);
 					needToFix = true;
@@ -106,6 +106,23 @@ public class VietnameseSpellChecker {
 						vowelIndexes[1] = OW_INDEX + (secondVowel == 'o' ? 0 : 6);
 						needToFix = true;
 					}
+				} else if ((secondVowel == 'a' || secondVowel == 'A') && 
+						(consonant == 'q' || consonant == 'Q')) {
+					// qưa -> quă
+					vowelIndexes[0] = U_INDEX + (firstVowel == 'ư' ? 0 : 6);
+					vowelIndexes[1] = AW_INDEX + (secondVowel == 'a' ? 0 : 6);
+					needToFix = true;					
+				}
+			}  else if (firstVowel == 'ơ' || firstVowel == 'Ơ') {
+				if (secondVowel == 'a' || secondVowel == 'A') {
+					// ơa -> oă
+					vowelIndexes[0] = O_INDEX + (firstVowel == 'ơ' ? 0 : 6);
+					vowelIndexes[1] = AW_INDEX + (secondVowel == 'a' ? 0 : 6);
+					needToFix = true;
+				} else if (secondVowel == 'ă' || secondVowel == 'Ă') {
+					// ơă -> oă
+					vowelIndexes[0] = O_INDEX + (firstVowel == 'ơ' ? 0 : 6);
+					needToFix = true;
 				}
 			}
 		}
@@ -145,8 +162,6 @@ public class VietnameseSpellChecker {
     			accentPosition = firstVowelIndex + vowelSequenceLength - 1;
     		}
 
-//			System.out.println("Accent position = " + accentPosition);
-			
 			if (currentAccentPosition != accentPosition || needToFix) {
 				for (int i = 0; i < vowelSequenceLength; i++) {
 					int row = vowelIndexes[i] / 6;
@@ -156,8 +171,6 @@ public class VietnameseSpellChecker {
 				
 				return true;
 			}						
-//		} else {
-//			System.out.println("Accent not found!");
 		}				
 		
 		return false;
@@ -207,8 +220,10 @@ public class VietnameseSpellChecker {
     };
 		
 	private static final int A_INDEX = 0;
+	private static final int O_INDEX = 4 * 6;
 	private static final int U_INDEX = 6 * 6;
-	private static final int OW_INDEX = 20 * 6;		
+	private static final int AW_INDEX = 14 * 6;
+	private static final int OW_INDEX = 20 * 6;
 	private static final int UW_INDEX = 22 * 6;
 	
 	private static final int VOWEL_WITH_BREVE = 12 * 6;
