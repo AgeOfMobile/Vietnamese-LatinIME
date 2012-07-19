@@ -1,28 +1,49 @@
+/*
+ * Copyright (C) 2012 Age Of Mobile (http://www.ageofmobile.com)
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
+ */
+
 package vietnamese.com.android.inputmethod.latin;
 
 public class VietnameseSpellChecker {
 	
-	public static boolean isVietnameseWord(StringBuilder sb) {
-    	for (int i = sb.length() - 1; i >= 0; i--) {
-    		int currentChar = sb.charAt(i);
+	/**
+	 * Kiểm tra đơn giản một từ có phải là từ tiếng Việt không
+	 * @param word
+	 * @return
+	 */
+	public static boolean isVietnameseWord(CharSequence word) {
+    	for (int i = word.length() - 1; i >= 0; i--) {
+    		int currentChar = word.charAt(i);
     		for (int j = 0; j < NON_VIETNAMESE_CHARACTERS.length; j++) {
     			if (currentChar == NON_VIETNAMESE_CHARACTERS[j][0] || 
     				currentChar == NON_VIETNAMESE_CHARACTERS[j][0] + ('a' - 'A')) {
     				if (i >= NON_VIETNAMESE_CHARACTERS[j][1]) {
     					return false;
     				}
-    			}    			
+    			}			
     		}
     	}
     	return true;
     }
 	
 	/**
+	 * Tự động chỉnh lại dấu và sửa các từ có "ươ", "ưa", "ơa" cho đúng
 	 * @param word từ cần điều chỉnh dấu
 	 * @param accent 0 = tự động tìm, 1 = sắc, 2 = huyền, 3 = hỏi, 4 = ngã, 5 = nặng
 	 */
 	public static boolean adjustAccent(StringBuilder word, int accent, boolean isComposingWord) {
-		// find the first character has an accent
 		int wordLength = word.length();
 		int firstVowelIndex = -1;
 		int vowelSequenceLength = 0;

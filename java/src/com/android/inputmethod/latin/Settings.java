@@ -25,6 +25,7 @@ import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.media.AudioManager;
 import android.os.Bundle;
+import android.os.Process;
 import android.preference.CheckBoxPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
@@ -131,7 +132,7 @@ public class Settings extends InputMethodSettingsFragment
         if (mDebugSettingsPreference != null) {
             final Intent debugSettingsIntent = new Intent(Intent.ACTION_MAIN);
             debugSettingsIntent.setClassName(
-                    context.getPackageName(), DebugSettings.class.getName());
+                    context.getPackageName(), DebugSettingsActivity.class.getName());
             mDebugSettingsPreference.setIntent(debugSettingsIntent);
         }
 
@@ -253,6 +254,11 @@ public class Settings extends InputMethodSettingsFragment
             updateKeypressSoundVolumeSummary(prefs, res);
         }
         refreshEnablingsOfKeypressSoundAndVibrationSettings(prefs, res);
+        
+        mKeyboardThemePreference = (ListPreference)findPreference(PREF_KEYBOARD_THEME_KEY);
+        if (mKeyboardThemePreference != null) {
+        	updateKeyboardThemeSummary(prefs, res);
+        }
     }
 
     @Override
@@ -291,12 +297,15 @@ public class Settings extends InputMethodSettingsFragment
                             PREF_INCLUDE_OTHER_IMES_IN_LANGUAGE_SWITCH_LIST);
             includeOtherImesInLanguageSwicthList.setEnabled(
                     !SettingsValues.isLanguageSwitchKeySupressed(prefs));
+        } else if (key.equals(PREF_KEYBOARD_THEME_KEY)) {        	
+        	mServiceNeedsRestart = true;
         }
         ensureConsistencyOfAutoCorrectionSettings();
         updateVoiceModeSummary();
         updateShowCorrectionSuggestionsSummary();
         updateKeyPreviewPopupDelaySummary();
         refreshEnablingsOfKeypressSoundAndVibrationSettings(prefs, getResources());
+        updateKeyboardThemeSummary(prefs, getResources());
     }
 
     private void updateShowCorrectionSuggestionsSummary() {
@@ -466,5 +475,21 @@ public class Settings extends InputMethodSettingsFragment
         mKeypressSoundVolumeSettingsTextView.setText(String.valueOf(currentVolumeInt));
         builder.setView(v);
         builder.create().show();
+    }
+    
+    private static final String PREF_KEYBOARD_THEME_KEY = "pref_keyboard_layout_20110916";
+    private boolean mServiceNeedsRestart = false;
+    private ListPreference mKeyboardThemePreference = null;
+    
+    @Override
+    public void onStop() {
+    	super.onStop();
+    	 if (mServiceNeedsRestart) Process.killProcess(Process.myPid());
+    }
+    
+    private void updateKeyboardThemeSummary(SharedPreferences sp, Resources res) {
+    	mKeyboardThemePreference.setSummary(
+                getResources().getStringArray(R.array.keyboard_layout_modes)
+                [mKeyboardThemePreference.findIndexOfValue(mKeyboardThemePreference.getValue())]);
     }
 }

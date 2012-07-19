@@ -131,7 +131,6 @@ public class Suggest implements Dictionary.WordCallback {
 
     public void resetMainDict(final Context context, final Locale locale) {
         mHasMainDictionary = false;
-        /*
         new Thread("InitializeBinaryDictionary") {
             @Override
             public void run() {
@@ -142,7 +141,6 @@ public class Suggest implements Dictionary.WordCallback {
                 addOrReplaceDictionary(mBigramDictionaries, DICT_KEY_MAIN, newMainDict);
             }
         }.start();
-        */
     }
 
     // The main dictionary could have been loaded asynchronously.  Don't cache the return value

@@ -135,9 +135,13 @@
             <PreferenceScreen
                 android:key="pref_vibration_duration_settings"
                 android:title="@string/prefs_keypress_vibration_duration_settings"/>
-            <PreferenceScreen
-                android:key="pref_keypress_sound_volume"
-                android:title="@string/prefs_keypress_sound_volume_settings" />
+            <ListPreference
+	            android:key="pref_keyboard_layout_20110916"
+	            android:title="@string/keyboard_layout"
+	            android:persistent="true"
+	            android:entryValues="@array/keyboard_layout_modes_values"
+	            android:entries="@array/keyboard_layout_modes"
+	            android:defaultValue="@string/config_default_keyboard_theme_index" />            
         </PreferenceScreen>
     </PreferenceCategory>
 </PreferenceScreen>
