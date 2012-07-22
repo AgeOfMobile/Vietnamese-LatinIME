@@ -146,7 +146,7 @@ public class VietnameseSpellChecker {
 					needToFix = true;
 				}
 			}
-		}
+		}		
 		
 		// put it to correct position
 		if ((accent > 0 && vowelSequenceLength > 1) || needToFix) {
@@ -176,7 +176,7 @@ public class VietnameseSpellChecker {
     				} else if (vowelIndexes[1] > VOWEL_WITH_BREVE) {
     					accentPosition = 1;
     				}
-    			} else if (firstVowelIndex + vowelSequenceLength < wordLength - 1) { // co phu am phia sau
+    			} else if (firstVowelIndex + vowelSequenceLength < wordLength) { // co phu am phia sau
     				accentPosition = 1;
     			}
     		} else {

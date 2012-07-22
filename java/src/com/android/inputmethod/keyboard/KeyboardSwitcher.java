@@ -64,6 +64,8 @@ public class KeyboardSwitcher implements KeyboardState.SwitchActions {
         new KeyboardTheme("Stne.Bold",        7, R.style.KeyboardTheme_Stone_Bold),
         new KeyboardTheme("GingerBread",      8, R.style.KeyboardTheme_Gingerbread),
         new KeyboardTheme("IceCreamSandwich", 5, R.style.KeyboardTheme_IceCreamSandwich),
+        new KeyboardTheme("IceCreamSandwich (Tall keys)", 9, R.style.KeyboardTheme_IceCreamSandwich_TallKeys),
+        new KeyboardTheme("IceCreamSandwich (Big keys)", 9, R.style.KeyboardTheme_IceCreamSandwich_BigKeys)
     };
 
     private SubtypeSwitcher mSubtypeSwitcher;

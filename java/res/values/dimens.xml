@@ -93,4 +93,13 @@
     <dimen name="more_suggestions_hint_text_size">27dp</dimen>
     <integer name="suggestions_count_in_strip">3</integer>
     <integer name="center_suggestion_percentile">36</integer>
+    
+    <!-- For IceCreamSandwich TallKeys theme -->
+    <dimen name="keyboardHeightTallKeys">230dp</dimen>
+    <fraction name="maxKeyboardHeightTallKeys">46%p</fraction>
+    <fraction name="key_horizontal_gap_ics_tallkeys">2.15%p</fraction>
+    
+    <!-- For IceCreamSandwich BigKeys theme -->
+    <dimen name="keyboardHeightBigKeys">230dp</dimen>
+    <fraction name="key_horizontal_gap_ics_bigkeys">1.2%p</fraction>
 </resources>

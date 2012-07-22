@@ -68,4 +68,13 @@
     <dimen name="more_keys_keyboard_slide_allowance">53.76dp</dimen>
     <!-- popup_key_height x -1.0 -->
     <dimen name="more_keys_keyboard_vertical_correction">-44.8dp</dimen>
+    
+    <!-- For IceCreamSandwich TallKeys theme -->
+    <dimen name="keyboardHeightTallKeys">192dp</dimen>
+    <fraction name="maxKeyboardHeightTallKeys">66%p</fraction>    
+    <fraction name="key_horizontal_gap_ics_tallkeys">0.9%p</fraction>
+    
+    <!-- For IceCreamSandwich BigKeys theme -->
+    <dimen name="keyboardHeightBigKeys">192dp</dimen>    
+    <fraction name="key_horizontal_gap_ics_bigkeys">0.8%p</fraction>
 </resources>

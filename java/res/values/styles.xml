@@ -313,7 +313,7 @@
         <item name="keyPreviewTextColor">#FFFFFFFF</item>
         <item name="keyPreviewOffset">@dimen/key_preview_offset_ics</item>
         <item name="shadowColor">#00000000</item>
-        <item name="shadowRadius">0.0</item>
+        <item name="shadowRadius">0</item>
     </style>
     <style
         name="LatinKeyboardView.IceCreamSandwich"
@@ -382,5 +382,67 @@
     <style name="MoreKeysKeyboardAnimation">
         <item name="android:windowEnterAnimation">@anim/more_keys_keyboard_fadein</item>
         <item name="android:windowExitAnimation">@anim/more_keys_keyboard_fadeout</item>
+    </style>
+    
+    <!-- Theme "IceCreamSandwich.Modified" -->
+    <style
+        name="Keyboard.IceCreamSandwich.TallKeys"
+        parent="Keyboard.IceCreamSandwich"
+    >
+        <!-- This should be aligned with KeyboardSwitcher.KEYBOARD_THEMES[] -->
+        <item name="themeId">9</item>
+        <item name="keyboardHeight">@dimen/keyboardHeightTallKeys</item>
+        <item name="maxKeyboardHeight">@fraction/maxKeyboardHeightTallKeys</item>        
+        <item name="horizontalGap">@fraction/key_horizontal_gap_ics_tallkeys</item>        
+    </style>
+    <style
+        name="KeyboardView.IceCreamSandwich.TallKeys"
+        parent="KeyboardView.IceCreamSandwich"
+    >
+        <item name="keyHintLetterColor">#80FFFFFF</item>
+        <item name="keyHintLabelColor">#A0FFFFFF</item>
+        <item name="shadowColor">#000000</item>
+        <item name="shadowRadius">2.75</item>
+    </style>
+    <style
+        name="LatinKeyboardView.IceCreamSandwich.TallKeys"
+        parent="KeyboardView.IceCreamSandwich.TallKeys"
+    >        
+    	<item name="autoCorrectionSpacebarLedEnabled">false</item>
+        <item name="autoCorrectionSpacebarLedIcon">@drawable/sym_keyboard_space_led_holo</item>
+        <item name="spacebarTextRatio">@fraction/spacebar_text_ratio</item>
+        <item name="spacebarTextColor">#FFC0C0C0</item>
+        <item name="spacebarTextShadowColor">#80000000</item>
+    </style>
+    
+    <!-- Theme "IceCreamSandwich.BigKeys" -->
+    <style
+        name="Keyboard.IceCreamSandwich.BigKeys"
+        parent="Keyboard.IceCreamSandwich"
+    >
+        <!-- This should be aligned with KeyboardSwitcher.KEYBOARD_THEMES[] -->
+        <item name="themeId">10</item>
+        <item name="keyboardHeight">@dimen/keyboardHeightBigKeys</item>
+        <item name="maxKeyboardHeight">@fraction/maxKeyboardHeightTallKeys</item>        
+        <item name="horizontalGap">@fraction/key_horizontal_gap_ics_bigkeys</item>        
+    </style>
+    <style
+        name="KeyboardView.IceCreamSandwich.BigKeys"
+        parent="KeyboardView.IceCreamSandwich"
+    >
+        <item name="keyHintLetterColor">#80FFFFFF</item>
+        <item name="keyHintLabelColor">#A0FFFFFF</item>
+        <item name="shadowColor">#000000</item>
+        <item name="shadowRadius">2.75</item>
+    </style>
+    <style
+        name="LatinKeyboardView.IceCreamSandwich.BigKeys"
+        parent="KeyboardView.IceCreamSandwich.BigKeys"
+    >        
+    	<item name="autoCorrectionSpacebarLedEnabled">false</item>
+        <item name="autoCorrectionSpacebarLedIcon">@drawable/sym_keyboard_space_led_holo</item>
+        <item name="spacebarTextRatio">@fraction/spacebar_text_ratio</item>
+        <item name="spacebarTextColor">#FFC0C0C0</item>
+        <item name="spacebarTextShadowColor">#80000000</item>
     </style>
 </resources>

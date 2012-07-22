@@ -115,6 +115,8 @@
     <string name="layout_stone_normal">Stone (normal)</string>
     <string name="layout_gingerbread">Gingerbread</string>
     <string name="layout_ics">IceCreamSandwich</string>
+    <string name="layout_ics_modified">IceCreamSandwich (Tall keys)</string>
+    <string name="layout_ics_bigkeys">IceCreamSandwich (Big keys)</string>
 
     <!-- For keyboard theme switcher dialog -->
     <string-array name="keyboard_layout_modes">
@@ -124,6 +126,8 @@
         <item>@string/layout_stone_bold</item>
         <item>@string/layout_gingerbread</item>
         <item>@string/layout_ics</item>
+        <item>@string/layout_ics_modified</item>
+        <item>@string/layout_ics_bigkeys</item>
     </string-array>
     <string-array name="keyboard_layout_modes_values">
         <item>0</item>
@@ -132,6 +136,8 @@
         <item>3</item>
         <item>4</item>
         <item>5</item>
+        <item>6</item>
+        <item>7</item>
     </string-array>
 
     <!-- Subtype locale display name exceptions.
